@@ -24,8 +24,14 @@ $(function() {
 
     // Window height - navbars heights
     function containerHeight() {
-        // var availableHeight = $(window).height() - $('body > .navbar').outerHeight() - $('body > .navbar + .navbar').outerHeight() - $('body > .navbar + .navbar-collapse').outerHeight() - $('.page-header').outerHeight();
-        var availableHeight = $(window).height() - $('body > .navbar').outerHeight();
+        // var availableHeight = $(window).height() - $('body > .navbar').outerHeight() - $('body > .navbar + .navbar').outerHeight() - $('body > .navbar + .navbar-collapse').outerHeight();
+        var pageHeaderHeight = $('.page-header').outerHeight();
+        if ( pageHeaderHeight == undefined )
+            pageHeaderHeight = 0;
+        else
+            pageHeaderHeight = parseInt(pageHeaderHeight);
+            
+        var availableHeight = $(window).height() - $('body > .navbar').outerHeight() - pageHeaderHeight;
 
         $('.page-container').attr('style', 'min-height:' + availableHeight + 'px');
     }

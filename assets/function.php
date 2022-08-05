@@ -1,8 +1,9 @@
 <?php 
+$con = new mysqli('localhost','root','','db_sbank');
 
 function loginUser($username, $password)
 {
-	$con = new mysqli('localhost','root','','db_sbank');
+	global $con;
 	
 	$username = $_POST['username'];
 	$password = $_POST['password'];
@@ -26,86 +27,41 @@ function loginUser($username, $password)
 
 function registerUser($username, $email, $password)
 {
-	$con = new mysqli('localhost','root','','db_sbank');
+	global $con;
+
+	$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+	return $con->query("insert into users (username, email, password, role, created, modified) values ('$username', '$email', '$hashed_password', 2, '". date("Y-m-d H:i:s") .", '". date("Y-m-d H:i:s") ."')");
+}
+
+function updateUser($username, $email, $password, $role)
+{
+	global $con;
 
 	session_start();
 
 	$user_id = $_SESSION['user_id'];
-	if ( $user_id > 0 ) {
+
+	if ($user_id > 0) {
 		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-		return $con->query("update users set username = '$username', email = '$email', password = '$hashed_password' where id = '$user_id'");
-	} else {
-		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-		return $con->query("insert into users (username, email, password) values ('$username', '$email', '$hashed_password')");
+		return $con->query("update users set username = '$username', email = '$email', password = '$hashed_password', role = '$role', modified = '". date("Y-m-d H:i:s") ."' where id = '$user_id'");
 	}
 }
 
-function setBalance($amount,$process,$accountNo)
+function getRoles()
 {
-	$con = new mysqli('localhost','root','','db_sbank');
-	$array = $con->query("select * from userAccounts where accountNo='$accountNo'");
-	$row = $array->fetch_assoc();
-	if ($process == 'credit') 
+	global $con;
+	
+	$result = $con->query("select * from roles where active = 1");
+
+	$roles_arr = array();
+	if ( $result->num_rows > 0 )
 	{
-		$balance = $row['balance'] + $amount;
-		return $con->query("update userAccounts set balance = '$balance' where accountNo = '$accountNo'");
-	}else
-	{
-		$balance = $row['balance'] - $amount;
-		return $con->query("update userAccounts set balance = '$balance' where accountNo = '$accountNo'");
+		while ($row = $result->fetch_assoc())  {
+			$roles_arr[] = $row;
+		}
 	}
+
+	return $roles_arr;
 }
-function setOtherBalance($amount,$process,$accountNo)
-{
-	$con = new mysqli('localhost','root','','db_sbank');
-	$array = $con->query("select * from otheraccounts where accountNo='$accountNo'");
-	$row = $array->fetch_assoc();
-	if ($process == 'credit') 
-	{
-		$balance = $row['balance'] + $amount;
-		return $con->query("update otheraccounts set balance = '$balance' where accountNo = '$accountNo'");
-	}else
-	{
-		$balance = $row['balance'] - $amount;
-		return $con->query("update otheraccounts set balance = '$balance' where accountNo = '$accountNo'");
-	}
-}
-function makeTransaction($action,$amount,$other)
-{
-	$con = new mysqli('localhost','root','','db_sbank');
-	if ($action == 'transfer')
-	{
-		return $con->query("insert into transaction (action,debit,other,userId) values ('transfer','$amount','$other','$_SESSION[userId]')");
-	}
-	if ($action == 'withdraw')
-	{
-		return $con->query("insert into transaction (action,debit,other,userId) values ('withdraw','$amount','$other','$_SESSION[userId]')");
-		
-	}
-	if ($action == 'deposit')
-	{
-		return $con->query("insert into transaction (action,credit,other,userId) values ('deposit','$amount','$other','$_SESSION[userId]')");
-		
-	}
-}
-function makeTransactionCashier($action,$amount,$other,$userId)
-{
-	$con = new mysqli('localhost','root','','db_sbank');
-	if ($action == 'transfer')
-	{
-		return $con->query("insert into transaction (action,debit,other,userId) values ('transfer','$amount','$other','$userId')");
-	}
-	if ($action == 'withdraw')
-	{
-		return $con->query("insert into transaction (action,debit,other,userId) values ('withdraw','$amount','$other','$userId')");
-		
-	}
-	if ($action == 'deposit')
-	{
-		return $con->query("insert into transaction (action,credit,other,userId) values ('deposit','$amount','$other','$userId')");
-		
-	}
-}
- ?>

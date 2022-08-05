@@ -7,6 +7,9 @@
 $(function() {
 	// Style checkboxes and radios
 	$('.styled').uniform();
+
+	// Basic select
+    $('.bootstrap-select').selectpicker();
 });
 
 $(document).ready(function(){

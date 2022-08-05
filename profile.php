@@ -5,19 +5,20 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Banking</title>
-  <?php require 'assets/autoloader.php'; ?>
-  <?php require 'assets/db.php'; ?>
-  <?php require 'assets/function.php'; ?>
-  <script type="text/javascript" src="assets/js/pages/profile.js"></script>
-  <?php
+  	<title>Bank System</title>
+  	<?php require 'assets/autoloader.php'; ?>
+  	<?php require 'assets/db.php'; ?>
+  	<?php require 'assets/function.php'; ?>
+  	<script type="text/javascript" src="assets/js/pages/profile.js"></script>
+  	<?php
 	if ( isset($_POST['username']) )
 	{
 		$username = $_POST['username'];
 		$email = $_POST['email'];
 		$pass = $_POST['new_password'];
+		$role = $_POST['role'];
 		
-		if ( registerUser($username, $email, $pass) ) {
+		if ( updateUser($username, $email, $pass, $role) ) {
 			$_SESSION['user']['username'] = $username;
 			$_SESSION['user']['email'] = $email;
 			$_SESSION['user']['password'] = $pass;
@@ -27,13 +28,16 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 			$error = "<div class='alert alert-warning text-center rounded-0'>Username or password wrong try again!</div>";
 		}
 	}
+
+	$roles_info = getRoles();
+	print_r($_SESSION['user']['role']);
 	?>
 </head>
 <body>
   <!-- Main navbar -->
   <div class="navbar navbar-inverse">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="index.php">Bank</a>
+			<a class="navbar-brand" href="index.php">Bank System</a>
 
 			<ul class="nav navbar-nav pull-right visible-xs-block">
 				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
@@ -66,11 +70,13 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
   <div class="page-header">
 		<div class="page-header-content">
 			<div class="page-title">
-				<h4>
-					<i class="icon-arrow-left52 position-left"></i>
-					Edit Profile
-					<small class="display-block">Good morning, <?php echo $_SESSION['user']['username'];?>!</small>
-				</h4>
+				<a href="index.php">
+					<h4>
+						<i class="icon-arrow-left52 position-left"></i>
+						Edit Profile
+						<small class="display-block">Good morning, <?php echo $_SESSION['user']['username'];?>!</small>
+					</h4>
+				</a>
 			</div>
 
 			<div class="heading-elements">
@@ -141,6 +147,16 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 								<input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
 							</div>
 
+							<div class="content-divider text-muted form-group"><span>User Role</span></div>
+
+							<div class="form-group">
+								<select class="bootstrap-select" data-width="100%" id="role" name="role">
+									<?php foreach ($roles_info as $info) : ?>
+										<option value="<?php echo $info['id'];?>" <?php $info['id'] == $_SESSION['user']['role'] ? "selected" : ""?>><?php echo $info['name'];?></option>	
+									<?php endforeach; ?>
+								</select>
+							</div>
+
 							<div class="text-center">
 								<!-- <a class="btn bg-teal btn-block btn-lg btn-submit">Register <i class="icon-circle-right2 position-right"></i></a> -->
 								<input class="btn bg-teal btn-block btn-lg btn-submit" type="submit" value="Save">
@@ -152,7 +168,7 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 
 					<!-- Footer -->
 					<div class="footer text-muted">
-						&copy; 2022. <a href="#">Simple Bank</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
+						&copy; 2022. <a href="#">Simple Bank System</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
 					</div>
 					<!-- /footer -->
 
@@ -167,7 +183,7 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 
 		<!-- Footer -->
 		<div class="footer text-muted">
-		&copy; 2022. <a href="#">Simple Bank</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
+		&copy; 2022. <a href="#">Simple Bank System</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
 		</div>
 		<!-- /footer -->
 	</div>

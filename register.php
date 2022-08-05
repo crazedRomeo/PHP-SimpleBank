@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Banking</title>
+	<title>Bank System</title>
 	<?php require 'assets/autoloader.php'; ?>
 	<?php require 'assets/function.php'; ?>
 	<script type="text/javascript" src="assets/js/pages/register.js"></script>
@@ -20,7 +20,7 @@
 		if ( registerUser($username, $email, $pass) ) {
 			loginUser($username, $pass);
 		} else {
-			$error = "<div class='alert alert-warning text-center rounded-0'>Username or password wrong try again!</div>";
+			$error = "error";
 		}
 	}
 	?>
@@ -89,7 +89,7 @@
 	<!-- Main navbar -->
 	<div class="navbar navbar-inverse">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="index.php">Bank</a>
+			<a class="navbar-brand" href="index.php">Bank System</a>
 
 			<ul class="nav navbar-nav pull-right visible-xs-block">
 				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
@@ -125,6 +125,13 @@
 							</div>
 
 							<div class="content-divider text-muted form-group"><span>Your credentials</span></div>
+
+							<?php if ($error != "") : ?>
+								<div class="alert bg-danger">
+									<button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+									<span class="text-semibold">User registration failed.</span>
+								</div>
+							<?php endif; ?>
 
 							<div class="form-group has-feedback has-feedback-left">
 								<div class="form-control-feedback">
@@ -167,7 +174,7 @@
 
 					<!-- Footer -->
 					<div class="footer text-muted">
-						&copy; 2022. <a href="#">Simple Bank</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
+						&copy; 2022. <a href="#">Simple Bank System</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
 					</div>
 					<!-- /footer -->
 

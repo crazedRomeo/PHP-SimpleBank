@@ -26,7 +26,6 @@ $(document).ready(function(){
 					type: 'post',
 					data: {
 						'id': 'username',
-						'value': $('#username').val()
 					} 
 				}
 			},
@@ -38,7 +37,6 @@ $(document).ready(function(){
 					type: 'post',
 					data: {
 						'id': 'email',
-						'value': $('#email').val()
 					}
 				}
 			},

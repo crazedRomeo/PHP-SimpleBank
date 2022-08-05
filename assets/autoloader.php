@@ -27,5 +27,6 @@
 
 <!-- Theme JS files -->
 <script type="text/javascript" src="assets/js/plugins/forms/styling/uniform.min.js"></script>
+<script type="text/javascript" src="assets/js/plugins/forms/selects/bootstrap_select.min.js"></script>
 <script type="text/javascript" src="assets/js/core/app.js"></script>
 <!-- /theme JS files -->

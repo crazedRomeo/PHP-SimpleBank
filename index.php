@@ -5,7 +5,7 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Banking</title>
+  <title>Bank System</title>
   <?php require 'assets/autoloader.php'; ?>
   <?php require 'assets/db.php'; ?>
   <?php require 'assets/function.php'; ?>
@@ -15,7 +15,7 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
   <!-- Main navbar -->
   <div class="navbar navbar-inverse">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="index.php">Bank</a>
+			<a class="navbar-brand" href="index.php">Bank System</a>
 
 			<ul class="nav navbar-nav pull-right visible-xs-block">
 				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
@@ -49,7 +49,7 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 		<div class="page-header-content">
 			<div class="page-title">
 				<h4>
-					<i class="icon-arrow-left52 position-left"></i>
+					<i class="icon-home position-left"></i>
 					Dashboard
 					<small class="display-block">Good morning, <?php echo $_SESSION['user']['username'];?>!</small>
 				</h4>
@@ -66,14 +66,14 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 	</div>
 
 	<!-- Page container -->
-	<div class="page-container login-container">
+	<div class="page-container">
 
 		<!-- Page content -->
 		<div class="page-content">
 
 			<!-- Main content -->
 			<div class="content-wrapper">
-      <div class="row">
+      			<div class="row">
 					<div class="col-lg-12">
 
 						<!-- Profile -->
@@ -135,19 +135,16 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 
 					</div>
 				</div>
-
-
-        
-      </div>
+			</div>
 			<!-- /main content -->
 		</div>
 		<!-- /page content -->
 
-    <!-- Footer -->
-    <div class="footer text-muted">
-      &copy; 2022. <a href="#">Simple Bank</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
-    </div>
-    <!-- /footer -->
+		<!-- Footer -->
+		<div class="footer text-muted">
+			&copy; 2022. <a href="#">Simple Bank System</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
+		</div>
+		<!-- /footer -->
 	</div>
 	<!-- /page container -->
 </body>
