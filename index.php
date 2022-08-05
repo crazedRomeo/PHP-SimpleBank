@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['userId'])){ header('location:login.php');}
+if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,113 +11,144 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
   <?php require 'assets/function.php'; ?>
   
 </head>
-<body style="background:#96D678;background-size: 100%">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-<a class="navbar-brand" href="#">
-    <img src="images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo BANKNAME; ?>
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<body>
+  <!-- Main navbar -->
+  <div class="navbar navbar-inverse">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="index.php">Bank</a>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item ">
-        <a class="nav-link active" href="index.php">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item ">  <a class="nav-link" href="accounts.php">Accounts</a></li>
-      <li class="nav-item ">  <a class="nav-link" href="statements.php">Account Statements</a></li>
-      <li class="nav-item ">  <a class="nav-link" href="transfer.php">Funds Transfer</a></li>
-      <!-- <li class="nav-item ">  <a class="nav-link" href="profile.php">Profile</a></li> -->
+			<ul class="nav navbar-nav pull-right visible-xs-block">
+				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+			</ul>
+		</div>
+
+		<div class="navbar-collapse collapse" id="navbar-mobile">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown dropdown-user">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<img src="assets/images/placeholder.jpg" alt="">
+						<span><?php echo $_SESSION['user']['email'];?></span>
+						<i class="caret"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li><a href="profile.php"><i class="icon-user-plus"></i> My profile</a></li>
+						<!-- <li><a href="#"><i class="icon-coins"></i> My balance</a></li>
+						<li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li> -->
+						<li class="divider"></li>
+						<!-- <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li> -->
+						<li><a href="logout.php"><i class="icon-switch2"></i> Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+  <div class="page-header">
+		<div class="page-header-content">
+			<div class="page-title">
+				<h4>
+					<i class="icon-arrow-left52 position-left"></i>
+					Dashboard
+					<small class="display-block">Good morning, <?php echo $_SESSION['user']['username'];?>!</small>
+				</h4>
+			</div>
+
+			<div class="heading-elements">
+				<div class="heading-btn-group">
+					<!-- <a href="#" class="btn btn-link btn-float has-text"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
+					<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calculator text-primary"></i> <span>Invoices</span></a>
+					<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calendar5 text-primary"></i> <span>Schedule</span></a> -->
+				</div>
+			</div>
+		<a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
+	</div>
+
+	<!-- Page container -->
+	<div class="page-container login-container">
+
+		<!-- Page content -->
+		<div class="page-content">
+
+			<!-- Main content -->
+			<div class="content-wrapper">
+      <div class="row">
+					<div class="col-lg-12">
+
+						<!-- Profile -->
+						<div class="panel panel-flat">
+							<div class="panel-heading">
+								<h6 class="panel-title">Profile</h6>
+								<div class="heading-elements">
+									<form class="heading-form" action="#">
+										<div class="form-group">
+											
+										</div>
+									</form>
+								</div>
+							<a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
+
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-lg-4">
+										<ul class="list-inline text-center">
+											<li>
+												<a href="#" class="btn border-teal text-teal btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-user"></i></a>
+											</li>
+											<li class="text-left">
+												<div class="text-semibold">Username</div>
+												<div class="text-muted"><?php echo $_SESSION['user']['username'];?></div>
+											</li>
+										</ul>
+									</div>
+
+									<div class="col-lg-4">
+										<ul class="list-inline text-center">
+											<li>
+												<a href="#" class="btn border-warning-400 text-warning-400 btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-mention"></i></a>
+											</li>
+											<li class="text-left">
+												<div class="text-semibold">Email</div>
+												<div class="text-muted"><?php echo $_SESSION['user']['email'];?></div>
+											</li>
+										</ul>
+									</div>
+
+									<div class="col-lg-4">
+										<ul class="list-inline text-center">
+											<li>
+												<a href="#" class="btn border-indigo-400 text-indigo-400 btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-people"></i></a>
+											</li>
+											<li class="text-left">
+												<div class="text-semibold">Role</div>
+												<div class="text-muted">user<?php echo $_SESSION['user']['role'];?></div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="position-relative" id="traffic-sources"><div class="d3-tip e" style="display: none;"></div><svg width="919.5" height="330"><g transform="translate(50,5)"></g></svg></div>
+						</div>
+						<!-- /Profile -->
+
+					</div>
+				</div>
 
 
-    </ul>
-    <?php include 'sideButton.php'; ?>
-    
-  </div>
-</nav><br><br><br>
-<div class="row w-100" >
-  <div class="col" style="padding: 22px;padding-top: 0">
-    <div class="jumbotron shadowBlack" style="padding: 25px;min-height: 241px;max-height: 241px">
-  <h4 class="display-5">Welecome to MCB Bank</h4>
-  <p  class="lead alert alert-warning"><b>Latest Notification:</b>
-
-  <?php 
-      $array = $con->query("select * from notice where userId = '$_SESSION[userId]' order by date desc");
-      if ($array->num_rows > 0)
-      {
-        $row = $array->fetch_assoc();
-        // {
-          echo $row['notice'];
-        // }
-      }
-      else
-        echo "<div class='alert alert-info'>Notice box empty</div>";
-     ?></p>
-  
-</div>
-        <div id="carouselExampleIndicators" class="carousel slide my-2 rounded-1 shadowBlack" data-ride="carousel" >
-          <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="d-block w-100" src="images/1.jpg" alt="First slide" style="max-height: 250px">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="images/2.jpg" alt="Second slide" style="max-height: 250px">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="images/3.jpg" alt="Third slide" style="max-height: 250px">
-          </div>
-
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
+        
       </div>
-  </div>
-<div class="col">
-    <div class="row" style="padding: 22px;padding-top: 0">
-      <div class="col">
-        <div class="card shadowBlack ">
-          <img class="card-img-top" src="images/acount.jpg" style="max-height: 155px;min-height: 155px" alt="Card image cap">
-          <div class="card-body">
-            <a href="accounts.php" class="btn btn-outline-success btn-block">Account Summary</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadowBlack ">
-          <img class="card-img-top" src="images/transfer.jpg" alt="Card image cap" style="max-height: 155px;min-height: 155px">
-        <div class="card-body">
-          <a href="transfer.php" class="btn btn-outline-success btn-block">Transfer Money</a>
-         </div>
-        </div>
-      </div>
+			<!-- /main content -->
+		</div>
+		<!-- /page content -->
+
+    <!-- Footer -->
+    <div class="footer text-muted">
+      &copy; 2022. <a href="#">Simple Bank</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
     </div>
-    <div class="row" style="padding: 22px">
-      <div class="col">
-        <div class="card shadowBlack ">
-          <img class="card-img-top" src="images/bell.gif" style="max-height: 155px;min-height: 155px" alt="Card image cap">
-          <div class="card-body">
-            <a href="notice.php" class="btn btn-outline-primary btn-block">Check Notification</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadowBlack ">
-          <img class="card-img-top" src="images/contacts.gif" alt="Card image cap" style="max-height: 155px;min-height: 155px">
-        <div class="card-body">
-          <a href="feedback.php" class="btn btn-outline-primary btn-block">Contact Us</a>
-         </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    <!-- /footer -->
+	</div>
+	<!-- /page container -->
 </body>
 </html>
