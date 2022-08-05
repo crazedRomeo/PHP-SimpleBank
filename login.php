@@ -1,139 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Banking</title>
 	<?php require 'assets/autoloader.php'; ?>
 	<?php require 'assets/function.php'; ?>
+	<script type="text/javascript" src="assets/js/pages/login.js"></script>
 	<?php
-    $con = new mysqli('localhost','root','','db_sbank');
-    define('BANKNAME', 'MCB Bank');
-	
-		$error = "";
-		if (isset($_POST['userLogin']))
-		{
-			$error = "";
-  			$user = $_POST['email'];
-		    $pass = $_POST['password'];
-		   
-		    $result = $con->query("select * from userAccounts where email='$user' AND password='$pass'");
-		    if($result->num_rows>0)
-		    { 
-		      session_start();
-		      $data = $result->fetch_assoc();
-		      $_SESSION['userId']=$data['id'];
-		      $_SESSION['user'] = $data;
-		      header('location:index.php');
-		     }
-		    else
-		    {
-		      $error = "<div class='alert alert-warning text-center rounded-0'>Username or password wrong try again!</div>";
-		    }
-		}
-		if (isset($_POST['cashierLogin']))
-		{
-			$error = "";
-  			$user = $_POST['email'];
-		    $pass = $_POST['password'];
-		   
-		    $result = $con->query("select * from login where email='$user' AND password='$pass'");
-		    if($result->num_rows>0)
-		    { 
-		      session_start();
-		      $data = $result->fetch_assoc();
-		      $_SESSION['cashId']=$data['id'];
-		      //$_SESSION['user'] = $data;
-		      header('location:cindex.php');
-		     }
-		    else
-		    {
-		      $error = "<div class='alert alert-warning text-center rounded-0'>Username or password wrong try again!</div>";
-		    }
-		}
-		if (isset($_POST['managerLogin']))
-		{
-			$error = "";
-  			$user = $_POST['email'];
-		    $pass = $_POST['password'];
-		   
-		    $result = $con->query("select * from login where email='$user' AND password='$pass' AND type='manager'");
-		    if($result->num_rows>0)
-		    { 
-		      session_start();
-		      $data = $result->fetch_assoc();
-		      $_SESSION['managerId']=$data['id'];
-		      //$_SESSION['user'] = $data;
-		      header('location:mindex.php');
-		     }
-		    else
-		    {
-		      $error = "<div class='alert alert-warning text-center rounded-0'>Username or password wrong try again!</div>";
-		    }
-		}
+	if (isset($_POST['username']))
+	{
+		$ret = loginUser($username, $password);
 
-	 ?>
+		
+	}
+	?>
 </head>
-<body style="background: url(images/bg-login2.jpg);background-size: 100%">
-<h1 class="alert alert-success rounded-0"><?php echo BANKNAME; ?><small class="float-right text-muted" style="font-size: 12pt;"><kbd>Presented by:Tariq Fareed</kbd></small></h1>
-<br>
-<?php echo $error ?>
-<br>
-<div id="accordion" role="tablist" class="w-25 float-right shadowBlack" style="margin-right: 222px">
-	<br><h4 class="text-center text-white">Select Your Session</h4>
-  <div class="card rounded-0">
-    <div class="card-header" role="tab" id="headingOne">
-      <h5 class="mb-0">
-        <a style="text-decoration: none;" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-         <button class="btn btn-outline-success btn-block">User Login</button>
-        </a>
-      </h5>
-    </div>
+<body>
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="index.php">Bank</a>
 
-    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-      <div class="card-body">
-       <form method="POST">
-       	<input type="email" value="some@gmail.com" name="email" class="form-control" required placeholder="Enter Email">
-       	<input type="password" name="password" value="some" class="form-control" required placeholder="Enter Password">
-       	<button type="submit" class="btn btn-primary btn-block btn-sm my-1" name="userLogin">Enter </button>
-       </form>
-      </div>
-    </div>
-  </div>
-  <div class="card rounded-0">
-    <div class="card-header" role="tab" id="headingTwo">
-      <h5 class="mb-0">
-        <a class="collapsed btn btn-outline-success btn-block" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Manager Login
-        </a>
-      </h5>
-    </div>
-    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-      <div class="card-body">
-         <form method="POST">
-       	<input type="email" value="manager@manager.com" name="email" class="form-control" required placeholder="Enter Email">
-       	<input type="password" name="password" value="manager" class="form-control" required placeholder="Enter Password">
-       	<button type="submit" class="btn btn-primary btn-block btn-sm my-1" name="managerLogin">Enter </button>
-       </form>
-      </div>
-    </div>
-  </div>
-  <div class="card rounded-0">
-    <div class="card-header" role="tab" id="headingThree">
-      <h5 class="mb-0">
-        <a class="collapsed btn btn-outline-success btn-block" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-         Cashier Login
-        </a>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-      <div class="card-body">
-        <form method="POST">
-       	<input type="email" value="cashier@cashier.com" name="email" class="form-control" required placeholder="Enter Email">
-       	<input type="password" name="password" value="cashier" class="form-control" required placeholder="Enter Password">
-       	<button type="submit"  class="btn btn-primary btn-block btn-sm my-1" name="cashierLogin">Enter </button>
-       </form>
-      </div>
-    </div>
-  </div>
-</div>
+			<ul class="nav navbar-nav pull-right visible-xs-block">
+				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+			</ul>
+		</div>
+
+		<div class="navbar-collapse collapse" id="navbar-mobile">
+			<ul class="nav navbar-nav navbar-right">
+			</ul>
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+
+	<!-- Page container -->
+	<div class="page-container login-container">
+
+		<!-- Page content -->
+		<div class="page-content">
+
+			<!-- Main content -->
+			<div class="content-wrapper">
+
+				<!-- Content area -->
+				<div class="content">
+
+					<!-- Simple login form -->
+					<form id="login-form" method="POST">
+						<div class="panel panel-body login-form">
+							<div class="text-center">
+								<div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
+								<h5 class="content-group">Login to User <small class="display-block">Enter your credentials below</small></h5>
+							</div>
+
+							<div class="form-group has-feedback has-feedback-left">
+								<div class="form-control-feedback">
+									<i class="icon-user text-muted"></i>
+								</div>
+								<input type="text" class="form-control" id="username" name="username" placeholder="Username or Email">
+							</div>
+
+							<div class="form-group has-feedback has-feedback-left">
+								<div class="form-control-feedback">
+									<i class="icon-lock2 text-muted"></i>
+								</div>
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+							</div>
+
+							<!-- <div class="text-center">
+								<a href="login_password_recover.html">Forgot password?</a>
+							</div> -->
+
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 position-right"></i></button>
+							</div>
+
+							<div class="content-divider text-muted form-group"><span>Don't have an user?</span></div>
+							<a href="register.php" class="btn btn-default btn-block content-group">Sign up</a>
+							
+						</div>
+					</form>
+					<!-- /simple login form -->
+
+
+					<!-- Footer -->
+					<div class="footer text-muted">
+					&copy; 2022. <a href="#">Simple Bank</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
+					</div>
+					<!-- /footer -->
+
+				</div>
+				<!-- /content area -->
+
+			</div>
+			<!-- /main content -->
+
+		</div>
+		<!-- /page content -->
+
+	</div>
+	<!-- /page container -->
 </body>
 </html>
