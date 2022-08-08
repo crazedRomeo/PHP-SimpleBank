@@ -30,8 +30,14 @@ $(function() {
             pageHeaderHeight = 0;
         else
             pageHeaderHeight = parseInt(pageHeaderHeight);
+
+        var navBarHeight = $('#navbar-second-toggle').outerHeight();
+        if ( navBarHeight == undefined )
+            navBarHeight = 0;
+        else
+            navBarHeight = parseInt(navBarHeight);
             
-        var availableHeight = $(window).height() - $('body > .navbar').outerHeight() - pageHeaderHeight;
+        var availableHeight = $(window).height() - $('body > .navbar').outerHeight() - pageHeaderHeight - navBarHeight;
 
         $('.page-container').attr('style', 'min-height:' + availableHeight + 'px');
     }

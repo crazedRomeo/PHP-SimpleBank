@@ -8,7 +8,7 @@ function loginUser($username, $password)
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 
-	$result = $con->query("select * from users where (username = '$username' OR email = '$username') AND active = 1");
+	$result = $con->query("select * from user where (username = '$username' OR email = '$username') AND active = 1");
 	if ( $result->num_rows > 0 )
 	{
 		$data = $result->fetch_assoc();
@@ -31,7 +31,7 @@ function registerUser($username, $email, $password)
 
 	$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-	return $con->query("insert into users (username, email, password, role, created, modified) values ('$username', '$email', '$hashed_password', 2, '". date("Y-m-d H:i:s") .", '". date("Y-m-d H:i:s") ."')");
+	return $con->query("insert into user (username, email, password, role, created, modified) values ('$username', '$email', '$hashed_password', 2, '". date("Y-m-d H:i:s") .", '". date("Y-m-d H:i:s") ."')");
 }
 
 function updateUser($username, $email, $password, $role)
@@ -45,7 +45,7 @@ function updateUser($username, $email, $password, $role)
 	if ($user_id > 0) {
 		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-		return $con->query("update users set username = '$username', email = '$email', password = '$hashed_password', role = '$role', modified = '". date("Y-m-d H:i:s") ."' where id = '$user_id'");
+		return $con->query("update user set username = '$username', email = '$email', password = '$hashed_password', role = '$role', modified = '". date("Y-m-d H:i:s") ."' where id = '$user_id'");
 	}
 }
 

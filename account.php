@@ -51,8 +51,8 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 
 		<div class="navbar-collapse collapse" id="navbar-second-toggle">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="index.php"><i class="icon-home position-left"></i> Dashboard</a></li>
-				<li><a href="account.php"><i class="icon-user-plus position-left"></i> Create Account</a></li>
+				<li><a href="index.php"><i class="icon-home position-left"></i> Dashboard</a></li>
+				<li class="active"><a href="account.php"><i class="icon-user-plus position-left"></i> Create Account</a></li>
 				<li><a href="accounts.php"><i class="icon-users4 position-left"></i> My Accounts</a></li>
 				<li><a href="#"><i class="icon-display4 position-left"></i> Deposit</a></li>
 				<li><a href="#"><i class="icon-display4 position-left"></i> Withdraw</a></li>
