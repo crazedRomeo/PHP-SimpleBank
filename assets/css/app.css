@@ -1,0 +1,23 @@
+.account-form {
+    margin: 0 auto 20px auto;
+    width: 520px;
+}
+
+.form-control-feedback-right {
+    pointer-events: auto;
+    left: auto !important;
+    right: 0 !important;
+    cursor: pointer !important;
+}
+
+.panel-account-list {
+    margin-bottom: 0px !important;
+}
+
+.panel-account-list tr {
+    cursor: pointer;
+}
+
+.panel-account-pager ul {
+    margin-top: 0px !important;
+}

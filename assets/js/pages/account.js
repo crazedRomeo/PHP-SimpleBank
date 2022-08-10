@@ -1,63 +1,62 @@
 /* ------------------------------------------------------------------------------
 *
-*  # Register page
+*  # Create Account page
 *
 * ---------------------------------------------------------------------------- */
 
 $(function() {
 	// Style checkboxes and radios
 	$('.styled').uniform();
+
+	// Basic select
+    $('.bootstrap-select').selectpicker();
+
+	$("#account_reload").click(function() {
+		$.ajax({
+			url: 'checkAccount.php',
+			dataType: 'json',
+			type: 'post',
+			data: { id : "account_reload" },
+			success: function( data ){
+				$('#account_number').val( data.account_number );
+			},
+		});
+	});
 });
 
 $(document).ready(function(){
 
-    $("#register-form").validate({
+    $("#account-form").validate({
 		onsubmit: true,
 		errorPlacement: function(error, element) {
 			error.addClass('help-block text-danger');
 			error.insertAfter(element);
 		},
 		rules: {
-			username : {
+			account_number : {
 				required: true,
-				minlength: 3,
+				minlength: 12,
 				remote: {
-					url: 'checkUnique.php',
+					url: 'checkAccount.php',
 					type: 'post',
 					data: {
-						'id': 'username',
+						'id': 'account_number',
+						'value': $('#account_number').val()
 					} 
 				}
 			},
-			email: {
+			account_type: {
 				required: true,
-				email: true,
-				remote: {
-					url: 'checkUnique.php',
-					type: 'post',
-					data: {
-						'id': 'email',
-					}
-				}
 			},
-			password: {
+			balance: {
 				required: true,
-				minlength: 5
-			},
-			confirm_password: {
-				required: true,
-				minlength: 5,
-				equalTo: "#password",
+				range: [5, 10000],
 			},
 		},
 		messages : {
-			username: {
+			account_number: {
 				minlength: "Name should be at least 3 characters",
-				remote: "This username is already taken"
-			},
-			email: {
-				email: "The email should be in the format: abc@domain.tld",
-				remote: "This email is already taken"
+				remote: "This Account Number is already taken"
 			},
 		},
 		submitHandler: function (form) {

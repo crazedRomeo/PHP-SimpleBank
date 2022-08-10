@@ -9,7 +9,7 @@ if ($user_id > 0) {
     $con = new mysqli('localhost','root','','db_sbank');
 
     if ( $type == 'username' ) {
-        $result = $con->query("select * from users where username = '$value' AND active = 1 AND id != $user_id");
+        $result = $con->query("select * from user where username = '$value' AND active = 1 AND id != $user_id");
 
         if ($result->num_rows > 0) {
             echo "false";
@@ -17,7 +17,7 @@ if ($user_id > 0) {
             echo "true";
         }
     } elseif ( $type == 'email' ) {
-        $result = $con->query("select * from users where email = '$value' AND active = 1 AND id != $user_id");
+        $result = $con->query("select * from user where email = '$value' AND active = 1 AND id != $user_id");
 
         if ($result->num_rows > 0) {
             echo "false";

@@ -1,170 +1,100 @@
 <?php
-session_start();
-if(!isset($_SESSION['user_id'])){ header('location:login.php');}
+$page = "account";
+$bytes = random_bytes(6);
+$account_number = bin2hex($bytes);
+$type_info[] = array('id' => 0, 'type' => 'Personal');
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Bank System</title>
-  <?php require 'assets/autoloader.php'; ?>
-  <?php require 'assets/db.php'; ?>
-  <?php require 'assets/function.php'; ?>
-  
-</head>
-<body>
-  	<!-- Main navbar -->
-  	<div class="navbar navbar-inverse">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="index.php">Bank System</a>
+<?php require 'layout/header.php'; ?>
+<script type="text/javascript" src="assets/js/pages/account.js"></script>
+<?php
+	$error = "";
+	if ( isset($_POST['account_number']) )
+	{
+		$error = "";
+		
+		if ( !registerAccount() ) {
+			$error = "error";
+		} else {
+			header('location:accounts.php');
+		}
+	}
+?>
+<!-- Page container -->
+<div class="page-container login-container">
 
-			<ul class="nav navbar-nav pull-right visible-xs-block">
-				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
-			</ul>
-		</div>
+	<!-- Page content -->
+	<div class="page-content">
 
-		<div class="navbar-collapse collapse" id="navbar-mobile">
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown dropdown-user">
-					<a class="dropdown-toggle" data-toggle="dropdown">
-						<img src="assets/images/placeholder.jpg" alt="">
-						<span><?php echo $_SESSION['user']['email'];?></span>
-						<i class="caret"></i>
-					</a>
+		<!-- Main content -->
+		<div class="content-wrapper">
 
-					<ul class="dropdown-menu dropdown-menu-right">
-						<li><a href="profile.php"><i class="icon-user-plus"></i> My profile</a></li>
-						<!-- <li><a href="#"><i class="icon-coins"></i> My balance</a></li>
-						<li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li> -->
-						<li class="divider"></li>
-						<!-- <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li> -->
-						<li><a href="logout.php"><i class="icon-switch2"></i> Logout</a></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</div>
-
-	<div class="navbar navbar-default" id="navbar-second">
-		<ul class="nav navbar-nav no-border visible-xs-block">
-			<li><a class="text-center collapsed" data-toggle="collapse" data-target="#navbar-second-toggle"><i class="icon-menu7"></i></a></li>
-		</ul>
-
-		<div class="navbar-collapse collapse" id="navbar-second-toggle">
-			<ul class="nav navbar-nav">
-				<li><a href="index.php"><i class="icon-home position-left"></i> Dashboard</a></li>
-				<li class="active"><a href="account.php"><i class="icon-user-plus position-left"></i> Create Account</a></li>
-				<li><a href="accounts.php"><i class="icon-users4 position-left"></i> My Accounts</a></li>
-				<li><a href="#"><i class="icon-display4 position-left"></i> Deposit</a></li>
-				<li><a href="#"><i class="icon-display4 position-left"></i> Withdraw</a></li>
-				<li><a href="#"><i class="icon-display4 position-left"></i> Transfer</a></li>
-				<li><a href="profile.php"><i class="icon-display4 position-left"></i> Profile</a></li>
-				<li><a href="logout.php"><i class="icon-switch2 position-left"></i> Logout</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- /main navbar -->
-
-  <div class="page-header">
-		<div class="page-header-content">
-			<div class="page-title">
-				<h4>
-					<i class="icon-home position-left"></i>
-					Dashboard
-					<small class="display-block">Good morning, <?php echo $_SESSION['user']['username'];?>!</small>
-				</h4>
-			</div>
-
-			<div class="heading-elements">
-				<div class="heading-btn-group">
-					<!-- <a href="#" class="btn btn-link btn-float has-text"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
-					<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calculator text-primary"></i> <span>Invoices</span></a>
-					<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calendar5 text-primary"></i> <span>Schedule</span></a> -->
-				</div>
-			</div>
-		<a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
-	</div>
-
-	<!-- Page container -->
-	<div class="page-container">
-
-		<!-- Page content -->
-		<div class="page-content">
-
-			<!-- Main content -->
-			<div class="content-wrapper">
-      			<div class="row">
-					<div class="col-lg-12">
-
-						<!-- Profile -->
-						<div class="panel panel-flat">
-							<div class="panel-heading">
-								<h6 class="panel-title">Profile</h6>
-								<div class="heading-elements">
-									<form class="heading-form" action="#">
-										<div class="form-group">
-											
-										</div>
-									</form>
-								</div>
-							<a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
-
-							<div class="container-fluid">
-								<div class="row">
-									<div class="col-lg-4">
-										<ul class="list-inline text-center">
-											<li>
-												<a href="#" class="btn border-teal text-teal btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-user"></i></a>
-											</li>
-											<li class="text-left">
-												<div class="text-semibold">Username</div>
-												<div class="text-muted"><?php echo $_SESSION['user']['username'];?></div>
-											</li>
-										</ul>
-									</div>
-
-									<div class="col-lg-4">
-										<ul class="list-inline text-center">
-											<li>
-												<a href="#" class="btn border-warning-400 text-warning-400 btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-mention"></i></a>
-											</li>
-											<li class="text-left">
-												<div class="text-semibold">Email</div>
-												<div class="text-muted"><?php echo $_SESSION['user']['email'];?></div>
-											</li>
-										</ul>
-									</div>
-
-									<div class="col-lg-4">
-										<ul class="list-inline text-center">
-											<li>
-												<a href="#" class="btn border-indigo-400 text-indigo-400 btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-people"></i></a>
-											</li>
-											<li class="text-left">
-												<div class="text-semibold">Role</div>
-												<div class="text-muted">user<?php echo $_SESSION['user']['role'];?></div>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-
-							<div class="position-relative" id="traffic-sources"><div class="d3-tip e" style="display: none;"></div><svg width="919.5" height="330"><g transform="translate(50,5)"></g></svg></div>
+			<!-- Content area -->
+			<div class="content">
+				<form id="account-form" method="POST">
+					<div class="panel panel-body account-form">
+						<div class="text-center">
+							<div class="icon-object border-success text-success"><i class="icon-plus3"></i></div>
+							<h5 class="content-group">Create Account <small class="display-block">All fields are required</small></h5>
 						</div>
-						<!-- /Profile -->
 
+						<?php if ($error != "") : ?>
+							<div class="alert bg-danger">
+								<button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+								<span class="text-semibold">Account registration failed.</span>
+							</div>
+						<?php endif; ?>
+
+						<div class="form-group has-feedback has-feedback-left">
+							<label class="control-label">Account Number</label>
+							<div class="form-control-feedback">
+								<i class="icon-address-book text-muted"></i>
+							</div>
+							<input type="text" class="form-control" id="account_number" name="account_number" value="<?php echo $account_number; ?>" placeholder="Account Number">
+							<div class="form-control-feedback form-control-feedback-right" id="account_reload">
+								<i class="icon-reload-alt text-muted"></i>
+							</div>
+						</div>
+
+						<div class="form-group has-feedback has-feedback-left">
+							<label class="control-label">UserName</label>
+							<div class="form-control-feedback">
+								<i class="icon-user-check text-muted"></i>
+							</div>
+							<input type="text" class="form-control" id="username" name="username" value="<?php echo $_SESSION['user']['username']; ?>" disabled>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">Account Type</label>
+							<select class="bootstrap-select" data-width="100%" id="type" name="type">
+								<?php foreach ($type_info as $info) : ?>
+									<option value="<?php echo $info['id'];?>"><?php echo $info['type'];?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+
+						<div class="form-group has-feedback has-feedback-left">
+							<label class="control-label">Balance</label>
+							<div class="form-control-feedback">
+								<i class=" icon-coin-dollar text-muted"></i>
+							</div>
+							<input type="number" class="form-control" id="balance" name="balance" value="5">
+						</div>
+
+						<div class="text-center">
+							<!-- <a class="btn bg-teal btn-block btn-lg btn-submit">Register <i class="icon-circle-right2 position-right"></i></a> -->
+							<input class="btn bg-teal btn-block btn-lg btn-submit" type="submit" value="Register">
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
-			<!-- /main content -->
-		</div>
-		<!-- /page content -->
+			<!-- /content area -->
 
-		<!-- Footer -->
-		<div class="footer text-muted">
-			&copy; 2022. <a href="#">Simple Bank System</a> by <a href="https://github.com/crazedRomeo" target="_blank">Future</a>
 		</div>
-		<!-- /footer -->
+		<!-- /main content -->
 	</div>
-	<!-- /page container -->
-</body>
-</html>
+	<!-- /page content -->
+
+</div>
+<!-- /Page container -->
+
+<?php require 'layout/footer.php'; ?>

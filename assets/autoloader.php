@@ -13,6 +13,7 @@
 <link href="assets/css/minified/core.min.css" rel="stylesheet" type="text/css">
 <link href="assets/css/minified/components.min.css" rel="stylesheet" type="text/css">
 <link href="assets/css/minified/colors.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/app.css" rel="stylesheet" type="text/css">
 <!-- /global stylesheets -->
 
 <!-- Core JS files -->
