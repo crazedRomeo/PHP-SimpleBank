@@ -106,6 +106,82 @@ function registerAccount()
 	}
 }
 
+function depositAccount()
+{
+	global $con;
+		
+	$account_id = intval($_POST['account_number']);
+	$user_id = intval($_SESSION['user_id']);
+	$balance = intval($_POST['balance']);
+	$memo = trim($_POST['memo']);
+	
+	if ( $account_id > 0 ) {
+		if (addTransaction(0, $account_id, $balance * -1, TRANSACTION_DEPOSIT, $memo)) {
+			$result = $con->query("select * from transaction where account_src = '0' AND active = 1");
+			$account_balance = 0;
+			if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()) {
+					$account_balance += $row['balance_change'];
+				}
+			}
+	
+			$con->query("update account set balance = '$account_balance', modified = '". date("Y-m-d H:i:s") ."' where id = '0'");
+
+
+			$result = $con->query("select * from transaction where account_src = '$account_id' AND active = 1");
+			$account_balance = 0;
+			if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()) {
+					$account_balance += $row['balance_change'];
+				}
+			}
+	
+			$con->query("update account set balance = '$account_balance', modified = '". date("Y-m-d H:i:s") ."' where id = '$account_id'");
+	
+			return true;
+		}
+	}
+	return false;
+}
+
+function withdrawAccount()
+{
+	global $con;
+		
+	$account_id = intval($_POST['account_number']);
+	$user_id = intval($_SESSION['user_id']);
+	$balance = intval($_POST['balance']);
+	$memo = trim($_POST['memo']);
+
+	if ( $account_id > 0 ) {
+		if (addTransaction(0, $account_id, $balance, TRANSACTION_WITHDRAW, $memo)) {
+			$result = $con->query("select * from transaction where account_src = '0' AND active = 1");
+			$account_balance = 0;
+			if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()) {
+					$account_balance += $row['balance_change'];
+				}
+			}
+	
+			$con->query("update account set balance = '$account_balance', modified = '". date("Y-m-d H:i:s") ."' where id = '0'");
+
+
+			$result = $con->query("select * from transaction where account_src = '$account_id' AND active = 1");
+			$account_balance = 0;
+			if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()) {
+					$account_balance += $row['balance_change'];
+				}
+			}
+	
+			$con->query("update account set balance = '$account_balance', modified = '". date("Y-m-d H:i:s") ."' where id = '$account_id'");
+	
+			return true;
+		}
+	}
+	return false;
+}
+
 function totalAccounts()
 {
 	global $con;
@@ -121,6 +197,22 @@ function totalAccounts()
 	}
 
 	return $total_account;
+}
+
+function getAccount($account_id)
+{
+	global $con;
+	
+	$result = $con->query("select * from account where id = '$account_id'");
+	
+	$account_info = array();
+	if ($result->num_rows > 0) {
+		while ($row = $result->fetch_assoc()) {
+			$account_info = $row;
+		}
+	}
+
+	return $account_info;
 }
 
 function getAccounts()
@@ -147,7 +239,7 @@ function addTransaction($account_src, $account_dest, $balance, $type, $memo)
 {
 	global $con;
 
-	if ( $type == TRANSACTION_DEPOSIT ) {
+	// if ( $type == TRANSACTION_DEPOSIT ) {
 		$result = $con->query("select * from transaction where account_src = '$account_src' AND active = 1 ORDER BY id DESC LIMIT 1");
 		$account_src_info = array();
 		if ( $result->num_rows > 0 )
@@ -175,7 +267,45 @@ function addTransaction($account_src, $account_dest, $balance, $type, $memo)
 
 			$result = $con->query("insert into transaction (account_src, account_dest, balance_change, transaction_type, memo, expected_total, created, modified) values ('$account_dest', '$account_src', '$balance', '$type', '$memo', '$expected_total', '". date("Y-m-d H:i:s") ."', '". date("Y-m-d H:i:s") ."')");
 		}
-	}
+	// }
 
 	return $result;
+}
+
+function totalTransaction($account_id)
+{
+	global $con;
+	
+	$result = $con->query("select COUNT(*) as total_trans from transaction where account_src = '$account_id'");
+	
+	$total_trans = 0;
+	if ($result->num_rows > 0) {
+		while ($row = $result->fetch_assoc()) {
+			$total_trans = $row['total_trans'];
+		}
+	}
+
+	return $total_trans;
+}
+
+function getTransaction($account_id)
+{
+	global $con;
+	
+	$page_num = isset($_GET['page']) ? intval($_GET['page']) : 1;
+	$start_num = ($page_num - 1) * 10;
+
+	$result = $con->query("select t.*, act_src.account as src_number, act_dst.account as dst_number from transaction as t
+		left join account as act_src on t.account_src = act_src.id
+		left join account as act_dst on t.account_dest = act_dst.id
+		where account_src = '$account_id' LIMIT {$start_num}, 10");
+	
+	$transaction_list = array();
+	if ($result->num_rows > 0) {
+		while ($row = $result->fetch_assoc()) {
+			$transaction_list[] = $row;
+		}
+	}
+
+	return $transaction_list;
 }

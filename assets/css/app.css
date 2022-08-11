@@ -1,4 +1,4 @@
-.account-form {
+.account-form, .deposit-form, .withdraw-form {
     margin: 0 auto 20px auto;
     width: 520px;
 }
@@ -20,4 +20,9 @@
 
 .panel-account-pager ul {
     margin-top: 0px !important;
+}
+
+#deposit-form textarea, #withdraw-form textarea {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
 }

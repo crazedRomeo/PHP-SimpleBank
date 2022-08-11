@@ -10,5 +10,5 @@ $(function() {
 });
 
 function showAccount(id) {
-	location.href = "accountProfile.php?account=" + id;
+	location.href = "accountInfo.php?account=" + id;
 }
