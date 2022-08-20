@@ -43,19 +43,29 @@
 
 						<div class="form-group">
 							<label class="control-label">Account Number</label>
-							<select class="bootstrap-select" data-show-subtext="true" data-width="100%" id="account_number" name="account_number">
+							<select class="select-search" id="account_number" name="account_number">
+								<option value="0">－－－－－－</option>
 								<?php foreach ($account_list as $info) : ?>
-									<option value="<?php echo $info['id'];?>" data-subtext="( $<?php echo $info['balance'];?> )"><?php echo $info['account'];?></option>
+									<option value="<?php echo $info['id'];?>"><?php echo $info['account'];?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
 
 						<div class="form-group has-feedback has-feedback-left">
-							<label class="control-label">Balance</label>
+							<label class="control-label">Account Balance</label>
+							<div class="form-control-feedback">
+								<i class="icon-coin-dollar text-muted"></i>
+							</div>
+							<input type="text" class="form-control" id="account_balance" name="account_balance" value="" disabled>
+						</div>
+
+						<div class="form-group has-feedback has-feedback-left">
+							<label class="control-label">Withdraw Balance</label>
 							<div class="form-control-feedback">
 								<i class="icon-coin-dollar text-muted"></i>
 							</div>
 							<input type="number" class="form-control" id="balance" name="balance" value="5">
+							<input type="hidden" id="account_num" name="account_num" value="0" />
 						</div>
 
 						<div class="form-group has-feedback has-feedback-left">

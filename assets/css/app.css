@@ -1,4 +1,4 @@
-.account-form, .deposit-form, .withdraw-form {
+.account-form, .deposit-form, .withdraw-form, .transfer-form {
     margin: 0 auto 20px auto;
     width: 520px;
 }

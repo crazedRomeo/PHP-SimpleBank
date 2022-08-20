@@ -8,9 +8,25 @@ $(function() {
 	// Style checkboxes and radios
 	$('.styled').uniform();
 
-	// Basic select
-    $('.bootstrap-select').selectpicker();
+	// Select with search
+    $('.select-search').select2();
 
+	$('#account_number').on('change', function(){
+		if ( $("#account_number").val() > 0 ) {
+			$.ajax({
+				url: 'checkPayment.php',
+				dataType: 'json',
+				type: 'post',
+				data: { id : "get_balance", account: $("#account_number").val() },
+	
+				success: function( data ){
+					$('#account_balance').val( data.balance );
+				},
+			});
+		} else {
+			$('#account_balance').val( "" );
+		}
+	});
 });
 
 $(document).ready(function(){
@@ -24,6 +40,7 @@ $(document).ready(function(){
 		rules: {
 			account_number : {
 				required: true,
+				min: 1,
 			},
 			balance: {
 				required: true,
@@ -32,7 +49,7 @@ $(document).ready(function(){
 		},
 		messages : {
 			account_number: {
-				minlength: "Name should be at least 3 characters",
+				min: "Please select an Account Number.",
 			},
 		},
 		submitHandler: function (form) {

@@ -55,7 +55,8 @@ if(!isset($_SESSION['user_id'])){ header('location:login.php');}
 				<li <?php echo $page == "accounts" ? "class='active'" : ""?>><a href="accounts.php"><i class="icon-users4 position-left"></i> My Accounts</a></li>
 				<li <?php echo $page == "deposit" ? "class='active'" : ""?>><a href="deposit.php"><i class="icon-display4 position-left"></i> Deposit</a></li>
 				<li <?php echo $page == "withdraw" ? "class='active'" : ""?>><a href="withdraw.php"><i class="icon-display4 position-left"></i> Withdraw</a></li>
-				<li <?php echo $page == "transfer" ? "class='active'" : ""?>><a href="#"><i class="icon-display4 position-left"></i> Transfer</a></li>
+				<li <?php echo $page == "itransfer" ? "class='active'" : ""?>><a href="internalTransfer.php"><i class="icon-display4 position-left"></i> Internal Transfer</a></li>
+				<li <?php echo $page == "etransfer" ? "class='active'" : ""?>><a href="externalTransfer.php"><i class="icon-display4 position-left"></i> External Transfer</a></li>
 				<li <?php echo $page == "profile" ? "class='active'" : ""?>><a href="profile.php"><i class="icon-profile position-left"></i> Profile</a></li>
 				<li><a href="logout.php"><i class="icon-switch2 position-left"></i> Logout</a></li>
 			</ul>

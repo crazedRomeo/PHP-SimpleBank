@@ -1,14 +1,15 @@
-<?php $page = "deposit"; ?>
+<?php $page = "itransfer"; ?>
 <?php require 'layout/header.php'; ?>
-<script type="text/javascript" src="assets/js/pages/deposit.js"></script>
+<script type="text/javascript" src="assets/js/pages/transfer.js"></script>
 <?php
 	$error = "";
 	$account_list = getAccounts();
-	if ( isset($_POST['account_number']) && intval($_POST['account_number']) > 0 )
+
+	if ( isset($_POST['account_src']) && intval($_POST['account_src']) > 0 && isset($_POST['account_dst']) && intval($_POST['account_dst']) > 0 )
 	{
 		$error = "";
 		
-		if ( !depositAccount() ) {
+		if ( !transferAccount() ) {
 			$error = "error";
 		} else {
 			header('location:accounts.php');
@@ -26,40 +27,40 @@
 
 			<!-- Content area -->
 			<div class="content">
-				<form id="deposit-form" method="POST">
-					<div class="panel panel-body deposit-form">
+				<form id="transfer-form" method="POST">
+					<div class="panel panel-body transfer-form">
 						<div class="text-center">
-							<div class="icon-object border-success text-success"><i class="icon-plus3"></i></div>
-							<h5 class="content-group">Deposit</h5>
+							<div class="icon-object border-success text-success"><i class="icon-transmission"></i></div>
+							<h5 class="content-group">Internal Transfer</h5>
 						</div>
 
 						<?php if ($error != "") : ?>
 							<div class="alert bg-danger">
 								<button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
-								<span class="text-semibold">Deposit failed.</span>
+								<span class="text-semibold">Internal Transfer Failed.</span>
 							</div>
 						<?php endif; ?>
 
 						<div class="form-group">
-							<label class="control-label">Account Number</label>
-							<select class="select-search" id="account_number" name="account_number">
-								<option value="0">－－－－－－</option>
+							<label class="control-label">Account From</label>
+							<select class="bootstrap-select" data-show-subtext="true" data-width="100%" id="account_src" name="account_src">
 								<?php foreach ($account_list as $info) : ?>
-									<option value="<?php echo $info['id'];?>"><?php echo $info['account'];?></option>
+									<option value="<?php echo $info['id'];?>" data-subtext="( $<?php echo $info['balance'];?> )"><?php echo $info['account'];?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">Account To</label>
+							<select class="bootstrap-select" data-show-subtext="true" data-width="100%" id="account_dst" name="account_dst">
+								<?php foreach ($account_list as $info) : ?>
+									<option value="<?php echo $info['id'];?>" data-subtext="( $<?php echo $info['balance'];?> )"><?php echo $info['account'];?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
 
 						<div class="form-group has-feedback has-feedback-left">
-							<label class="control-label">Account Balance</label>
-							<div class="form-control-feedback">
-								<i class="icon-coin-dollar text-muted"></i>
-							</div>
-							<input type="text" class="form-control" id="account_balance" name="account_balance" value="" disabled>
-						</div>
-
-						<div class="form-group has-feedback has-feedback-left">
-							<label class="control-label">Deposit Balance</label>
+							<label class="control-label">Balance</label>
 							<div class="form-control-feedback">
 								<i class="icon-coin-dollar text-muted"></i>
 							</div>
@@ -72,7 +73,7 @@
 						</div>
 
 						<div class="text-center">
-							<input class="btn bg-teal btn-block btn-lg btn-submit" type="submit" value="Deposit">
+							<input class="btn bg-teal btn-block btn-lg btn-submit" type="submit" value="Withdraw">
 						</div>
 					</div>
 				</form>

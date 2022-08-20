@@ -8,40 +8,32 @@ $(function() {
 	// Style checkboxes and radios
 	$('.styled').uniform();
 
-	// Select with search
-    $('.select-search').select2();
+	// Basic select
+    $('.bootstrap-select').selectpicker();
 
-	$('#account_number').on('change', function(){
-		if ( $("#account_number").val() > 0 ) {
-			$("#account_num").val($("#account_number").val());
-			console.log($("#account_num").val());
-			$.ajax({
-				url: 'checkPayment.php',
-				dataType: 'json',
-				type: 'post',
-				data: { id : "get_balance", account: $("#account_number").val() },
-				success: function( data ){
-					$('#account_balance').val( data.balance );
-				},
-			});
-		} else {
-			$('#account_balance').val( "" );
-		}
-	});
 });
 
 $(document).ready(function(){
+	jQuery.validator.addMethod("noteq", function(value, element){
+		if ( $("#account_src").val() == $("#account_dst").val() )
+			return true;
+		else
+			return false;
+	}, "Select a another account");
 
-    $("#withdraw-form").validate({
+    $("#transfer-form").validate({
 		onsubmit: true,
 		errorPlacement: function(error, element) {
 			error.addClass('help-block text-danger');
 			error.insertAfter(element);
 		},
 		rules: {
-			account_number : {
+			account_src : {
 				required: true,
-				min: 1,
+			},
+			account_dst : {
+				required: true,
+				noteq: true,
 			},
 			balance: {
 				required: true,
@@ -50,16 +42,17 @@ $(document).ready(function(){
 					url: 'checkPayment.php',
 					type: 'post',
 					data: {
-						id: 'withdraw',
-						account: $("#account_num").val(),
-						value: $('#balance').val(),
+						'id': 'transfer',
+						'account': $('#account_src').val(),
+						'value': $('#balance').val()
 					} 
 				}
 			},
 		},
 		messages : {
-			account_number: {
-				min: "Please select an Account Number.",
+			account_src: {
+			},
+			account_dst: {
 			},
 			balance: {
 				remote: "Can not withdraw more than the balance in your account."

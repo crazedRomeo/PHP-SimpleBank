@@ -182,6 +182,18 @@ function withdrawAccount()
 	return false;
 }
 
+function transferAccount()
+{
+	global $con;
+		
+	$account_id = intval($_POST['account_number']);
+	$user_id = intval($_SESSION['user_id']);
+	$balance = intval($_POST['balance']);
+	$memo = trim($_POST['memo']);
+
+	
+}
+
 function totalAccounts()
 {
 	global $con;
